@@ -26,11 +26,6 @@ public class Final_Meet_Drive extends OpMode
     private DcMotor intake;
     // attachment motors
 
-    private Servo colorServo;
-
-    private ColorSensor frontColor;
-    private ColorSensor midColor;
-
     private TouchSensor touch;
 
     ElapsedTime timer;
@@ -62,16 +57,6 @@ public class Final_Meet_Drive extends OpMode
         ducky = hardwareMap.get(DcMotor.class, "ducky");
         intake = hardwareMap.get(DcMotor.class, "intake");
 
-        colorServo = hardwareMap.get(Servo.class, "colorServo");
-
-        frontColor = hardwareMap.get(ColorSensor.class, "rightColor");
-        frontColor.enableLed(false);
-        // front sensor initialize
-
-        midColor = hardwareMap.get(ColorSensor.class, "leftColor");
-        midColor.enableLed(false);
-        // mid sensor initialize
-
         touch = hardwareMap.get(TouchSensor.class, "touch");
 
         moving =    false;
@@ -86,7 +71,6 @@ public class Final_Meet_Drive extends OpMode
         rightBack.setDirection(DcMotor.Direction.REVERSE);
         */
 
-        colorServo.setPosition(0);
 
         arm.setDirection(DcMotorSimple.Direction.REVERSE);
         arm2.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -243,24 +227,6 @@ public class Final_Meet_Drive extends OpMode
 
 
         telemetry.addData("level", levels);
-
-        redFront = frontColor.red();
-        blueFront = frontColor.blue();
-        greenFront = frontColor.green();
-        // set front colors
-
-        redMid = midColor.red();
-        greenMid = midColor.green();
-        blueMid = midColor.blue();
-        // set mid colors
-
-        telemetry.addData("redFront", redFront);
-        telemetry.addData("greenFront", greenFront);
-        telemetry.addData("blueFront", blueFront);
-
-        telemetry.addData("redMid", redMid);
-        telemetry.addData("greenMid", greenMid);
-        telemetry.addData("blueMid", blueMid);
         telemetry.update();
 
         double pow;
@@ -426,16 +392,6 @@ public class Final_Meet_Drive extends OpMode
 
         pow *= .6;
 
-
-
-        // move color servos
-        if (b1) {
-            colorServo.setPosition(1);
-        } else if (y1) {
-            colorServo.setPosition(0);
-        } else if (x1) {
-            colorServo.setPosition(.5);
-        }
 
         ducky.setPower(rightx2*.65);
         if (rightx2 == 1) ducky.setPower(.75);
