@@ -127,7 +127,7 @@ public class ObjectRecognition extends LinearOpMode {
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         // creates the parameters with the default settings
 
-        tfodParameters.minResultConfidence = 0.8f; // this is how sure the computer has to be to say somethhing is what it is
+        tfodParameters.minResultConfidence = 0.5f; // this is how sure the computer has to be to say somethhing is what it is
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 320;
 
