@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
 import java.util.List;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -15,6 +18,20 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 @Autonomous(name = "ObjectRecognition", group = "IterativeOpMode")
 
 public class ObjectRecognition extends LinearOpMode {
+
+    private DcMotor leftBack;
+    private DcMotor rightBack;
+    private DcMotor leftFront;
+    private DcMotor rightFront;
+    // wheels lol
+
+    private DcMotor arm;
+    private DcMotor arm2;
+    private DcMotor ducky;
+    private DcMotor intake;
+    // attachment motors
+
+    private TouchSensor touch;
 
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     // this is where we can find the preset models
@@ -36,6 +53,7 @@ public class ObjectRecognition extends LinearOpMode {
     private TFObjectDetector tfod;
     // this will later allow you to use TensorFlow.  This is a particular instance of the TensorFlow engine.
 
+    private boolean duck; // holds the true false value of whether a duck is present.
     /*
     Vuforia will feed its information and pictures it finds into TensorFlow for further analysis!
      */
@@ -43,6 +61,17 @@ public class ObjectRecognition extends LinearOpMode {
     @Override
     public void runOpMode() {
         // this is what happens in the autonomous code.
+        leftBack  = hardwareMap.get(DcMotor.class, "leftBack");
+        rightBack = hardwareMap.get(DcMotor.class, "rightBack");
+        leftFront = hardwareMap.get(DcMotor.class, "leftFront");
+        rightFront = hardwareMap.get(DcMotor.class, "rightFront");
+
+        arm = hardwareMap.get(DcMotor.class, "arm");
+        arm2 = hardwareMap.get(DcMotor.class, "arm2");
+        ducky = hardwareMap.get(DcMotor.class, "ducky");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+
+        touch = hardwareMap.get(TouchSensor.class, "touch");
 
         initVuforia(); // initialize vuforia first
         initTFOD(); // then initialize tensor flow.  This is because vuforia is used to feed the images into tensor flow, meaning it needs to be connected first
@@ -57,8 +86,6 @@ public class ObjectRecognition extends LinearOpMode {
             // magnification must be at least 1.0
             // zooms into what tensor flow is seeing to mimic zooming with camera.  Makes everything more readable.
         }
-
-        waitForStart(); // keeps robot still until the play button is pressed after init.
 
         while (!opModeIsActive() && !isStopRequested()) {
             // while we are still running (time hasn't run out!)
@@ -76,7 +103,8 @@ public class ObjectRecognition extends LinearOpMode {
                     telemetry.addData("# Object Detected", updatedRecognitions.size());
                     // says how many is found.
 
-                    int i = 0; // this is a counter for the loop.
+                    duck = false; // this will turn false until seen in the for loop.  Later this whole entire code is repeated until start is pressed, so we keep resetting to false in case the duck disapears.
+
                     for (Recognition recognition : updatedRecognitions) {
                         // for each recogniton in updated recognitions (that's what the colon means!  You learn something new everyday :D)
 
@@ -95,13 +123,24 @@ public class ObjectRecognition extends LinearOpMode {
                         telemetry.addData("bottom", recognition.getBottom());
                         // get what's in the bottom
 
-                        sleep(500);
+                        if (recognition.getLabel().equals("Duck")){
+                            duck = true; // duck is true meaning it was shown.
+                        }
                     }
 
                     telemetry.update();
                     // update telemetry.(aka update what it says in the console on phone!)
                 }
             }
+        }
+
+        waitForStart();
+
+        if (duck == true) {
+            // duck visible
+        }
+        else {
+            // duck not visible
         }
     }
 
