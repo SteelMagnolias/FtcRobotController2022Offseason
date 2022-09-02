@@ -97,11 +97,43 @@ public class ObjectRecognition extends LinearOpMode {
 
                         telemetry.update();
                         // update telemetry.(aka update what it says in the console on phone!)
-
-
-
                     }
                 }
             }
         }
     }
+
+    private void initVuforia() {
+        // this will initialize vuforia.
+
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+        // creates a parameter object to collect necessary paramters and set to our vuforia localizer.
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY; // sets the vuforia key, which gives us access
+
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        // sets up a camera that will be used with this program
+
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        // makes vuforia object with said paramters
+    }
+
+    private void initTFOD() {
+        // this will initialize tensor flow lite
+
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("tfodMonitorViewId","id",hardwareMap.appContext.getPackageName());
+        // completely honest, not sure what this does, but I think it gets everything from the SDK to run this stuff
+
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        // creates the parameters with the default settings
+
+        tfodParameters.minResultConfidence = 0.8f; // this is how sure the computer has to be to say somethhing is what it is
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 320;
+
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+        // creates the tensor flow, but also links it with vuforia
+
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS); // loads the objects that can be detected.
+    }
+}
