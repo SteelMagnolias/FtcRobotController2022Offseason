@@ -53,7 +53,7 @@ public class ObjectRecognition extends LinearOpMode {
             tfod.activate();
             // turn the tensorflow on so it starts reading.
 
-            tfod.setZoom(2.5, 16.0/9.0);
+            tfod.setZoom(1.5, 16.0/9.0);
             // zooms into what tensor flow is seeing to mimic zooming with camera.  Makes everything more readable.
         }
 
@@ -97,7 +97,7 @@ public class ObjectRecognition extends LinearOpMode {
                             telemetry.addData("bottom", recognition.getBottom());
                             // get what's in the bottom
 
-                            sleep(1000);
+                            sleep(500);
                         }
 
                         telemetry.update();
