@@ -53,7 +53,7 @@ public class ObjectRecognition extends LinearOpMode {
             tfod.activate();
             // turn the tensorflow on so it starts reading.
 
-            tfod.setZoom(1.5, 16.0/9.0);
+            tfod.setZoom(0, 16.0/9.0);
             // zooms into what tensor flow is seeing to mimic zooming with camera.  Makes everything more readable.
         }
 
@@ -132,7 +132,7 @@ public class ObjectRecognition extends LinearOpMode {
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         // creates the parameters with the default settings
 
-        tfodParameters.minResultConfidence = 0.5f; // this is how sure the computer has to be to say somethhing is what it is
+        tfodParameters.minResultConfidence = 0.7f; // this is how sure the computer has to be to say somethhing is what it is
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 320;
 
