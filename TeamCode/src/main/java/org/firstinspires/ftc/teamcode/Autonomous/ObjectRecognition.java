@@ -82,17 +82,22 @@ public class ObjectRecognition extends LinearOpMode {
                         for (Recognition recognition : updatedRecognitions) {
                             // for each recogniton in updated recognitions (that's what the colon means!  You learn something new everyday :D)
 
-                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                            telemetry.addData("Object", recognition.getLabel());
                             // gets what the recognized object is.
 
-                            telemetry.addData(String.format("  left,top (%d)", i),"%.03f", "%.03f", recognition.getLeft(), recognition.getTop());
-                            // get what's in the left and top.
+                            telemetry.addData("left", recognition.getLeft());
+                            // get what's in the left
 
-                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f", "%.03f", recognition.getRight(), recognition.getBottom());
-                            // get what's in the right and bottom.  I think this might say where in the screen it is.
+                            telemetry.addData("top", recognition.getTop());
+                            // get what's in the top
 
-                            // also, all of the percentages and stuff is a way of organizing the words in the telemetry kind of like a table.  Look up Java Formatting for information on that.
-                            i++; // update counter.
+                            telemetry.addData("right", recognition.getRight());
+                            // get what's in the right
+
+                            telemetry.addData("bottom", recognition.getBottom());
+                            // get what's in the bottom
+
+                            sleep(1000);
                         }
 
                         telemetry.update();
