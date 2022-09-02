@@ -46,5 +46,62 @@ public class ObjectRecognition extends LinearOpMode {
 
         initVuforia(); // initialize vuforia first
         initTFOD(); // then initialize tensor flow.  This is because vuforia is used to feed the images into tensor flow, meaning it needs to be connected first
+
+        if (tfod != null) {
+            // aka the tensor flow has been initialized successfully.
+
+            tfod.activate();
+            // turn the tensorflow on so it starts reading.
+
+            tfod.setZoom(2.5, 16.0/9.0);
+            // zooms into what tensor flow is seeing to mimic zooming with camera.  Makes everything more readable.
+        }
+
+        waitForStart(); // keeps robot still until the play button is pressed after init.
+
+        if (opModeIsActive()) {
+            // if the play button has been pressed.
+
+            while (opModeIsActive()) {
+                // while we are still running (time hasn't run out!)
+
+                if (tfod != null) {
+                    // tensor flow is still running.
+
+                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                    // curates a list of things that the camera recognized.  When it does not see anything new, it becomes NULL.
+                    // updatedRecongitions holds what was found.
+
+                    if (updatedRecognitions != null) {
+                        // something is found
+
+                        telemetry.addData("# Object Detected", updatedRecognitions.size());
+                        // says how many is found.
+
+                        int i = 0; // this is a counter for the loop.
+                        for (Recognition recognition : updatedRecognitions) {
+                            // for each recogniton in updated recognitions (that's what the colon means!  You learn something new everyday :D)
+
+                            telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                            // gets what the recognized object is.
+
+                            telemetry.addData(String.format("  left,top (%d)", i),"%.03f", "%.03f", recognition.getLeft(), recognition.getTop());
+                            // get what's in the left and top.
+
+                            telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f", "%.03f", recognition.getRight(), recognition.getBottom());
+                            // get what's in the right and bottom.  I think this might say where in the screen it is.
+
+                            // also, all of the percentages and stuff is a way of organizing the words in the telemetry kind of like a table.  Look up Java Formatting for information on that.
+                            i++; // update counter.
+                        }
+
+                        telemetry.update();
+                        // update telemetry.(aka update what it says in the console on phone!)
+
+
+
+                    }
+                }
+            }
+        }
     }
-}
