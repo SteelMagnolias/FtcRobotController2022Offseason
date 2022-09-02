@@ -19,7 +19,7 @@ public class ObjectRecognition extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
     // this is where we can find the preset models
 
-    private static final String[] LABELS {
+    private static final String[] LABELS = {
             "Ball",
             "Cube",
             "Duck",
