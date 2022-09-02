@@ -150,6 +150,8 @@ public class ObjectRecognition extends LinearOpMode {
             // drive backward for 1/4 of a second.
             telemetry.addData("Duck?", "no");
         }
+
+        telemetry.update();
     }
 
     private void initVuforia() {
