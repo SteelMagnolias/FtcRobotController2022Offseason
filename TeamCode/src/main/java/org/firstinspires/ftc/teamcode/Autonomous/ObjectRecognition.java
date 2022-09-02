@@ -60,50 +60,46 @@ public class ObjectRecognition extends LinearOpMode {
 
         waitForStart(); // keeps robot still until the play button is pressed after init.
 
-        if (opModeIsActive()) {
-            // if the play button has been pressed.
+        while (!opModeIsActive() && !isStopRequested()) {
+            // while we are still running (time hasn't run out!)
 
-            while (opModeIsActive()) {
-                // while we are still running (time hasn't run out!)
+            if (tfod != null) {
+                // tensor flow is still running.
 
-                if (tfod != null) {
-                    // tensor flow is still running.
+                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                // curates a list of things that the camera recognized that is new!  Does not return if it is the same.  When it does not see anything new, it becomes NULL.
+                // updatedRecongitions holds what was found.
 
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    // curates a list of things that the camera recognized.  When it does not see anything new, it becomes NULL.
-                    // updatedRecongitions holds what was found.
+                if (updatedRecognitions != null) {
+                    // something is found
 
-                    if (updatedRecognitions != null) {
-                        // something is found
+                    telemetry.addData("# Object Detected", updatedRecognitions.size());
+                    // says how many is found.
 
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-                        // says how many is found.
+                    int i = 0; // this is a counter for the loop.
+                    for (Recognition recognition : updatedRecognitions) {
+                        // for each recogniton in updated recognitions (that's what the colon means!  You learn something new everyday :D)
 
-                        int i = 0; // this is a counter for the loop.
-                        for (Recognition recognition : updatedRecognitions) {
-                            // for each recogniton in updated recognitions (that's what the colon means!  You learn something new everyday :D)
+                        telemetry.addData("Object", recognition.getLabel());
+                        // gets what the recognized object is.
 
-                            telemetry.addData("Object", recognition.getLabel());
-                            // gets what the recognized object is.
+                        telemetry.addData("left", recognition.getLeft());
+                        // get what's in the left
 
-                            telemetry.addData("left", recognition.getLeft());
-                            // get what's in the left
+                        telemetry.addData("top", recognition.getTop());
+                        // get what's in the top
 
-                            telemetry.addData("top", recognition.getTop());
-                            // get what's in the top
+                        telemetry.addData("right", recognition.getRight());
+                        // get what's in the right
 
-                            telemetry.addData("right", recognition.getRight());
-                            // get what's in the right
+                        telemetry.addData("bottom", recognition.getBottom());
+                        // get what's in the bottom
 
-                            telemetry.addData("bottom", recognition.getBottom());
-                            // get what's in the bottom
-
-                            sleep(500);
-                        }
-
-                        telemetry.update();
-                        // update telemetry.(aka update what it says in the console on phone!)
+                        sleep(500);
                     }
+
+                    telemetry.update();
+                    // update telemetry.(aka update what it says in the console on phone!)
                 }
             }
         }
