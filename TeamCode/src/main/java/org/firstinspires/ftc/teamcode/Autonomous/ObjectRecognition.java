@@ -138,9 +138,17 @@ public class ObjectRecognition extends LinearOpMode {
 
         if (duck == true) {
             // duck visible
+
+            drive(0.3, 0.3, 0.3, 0.3,250);
+            // drive forward for 1/4 of a second
+            telemetry.addData("Duck?", "yes");
         }
         else {
             // duck not visible
+
+            drive(-0.3, -0.3, -0.3, -0.3, 250);
+            // drive backward for 1/4 of a second.
+            telemetry.addData("Duck?", "no");
         }
     }
 
@@ -176,5 +184,18 @@ public class ObjectRecognition extends LinearOpMode {
         // creates the tensor flow, but also links it with vuforia
 
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS); // loads the objects that can be detected.
+    }
+
+    public void drive (double lf, double rf, double lb, double rb, int time){
+        leftFront.setPower(lf);
+        rightFront.setPower(rf);
+        leftBack.setPower(lb);
+        rightBack.setPower(rb);
+        sleep(time);
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+        leftBack.setPower(0);
+        rightBack.setPower(0);
+        sleep(10);
     }
 }
